@@ -5,14 +5,17 @@ FROM alpine
 COPY --from=build /opt/dnsrecon/ /opt/dnsrecon/
 
 RUN apk add --no-cache --virtual dnsrecon-runtime-dependencies \
-    python3
+    python3 \
+    py3-netaddr \
+    py3-dnspython \
+    py3-lxml
 
 RUN adduser -D -u 1000 dnsrecon
 
 USER dnsrecon
 
-ENV PATH ${PATH}:/opt/dnsrecon/bin/
+ENV PATH ${PATH}:/opt/dnsrecon/
 ENV PYTHONPATH /usr/lib/python3.8/site-packages/:/opt/dnsrecon/lib/python3.8/site-packages/
 
-CMD ["dnsrecon", "--help"]
+CMD ["dnsrecon.py", "--help"]
 
